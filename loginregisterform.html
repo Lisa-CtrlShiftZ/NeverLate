@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/general.css">
+    <link rel="stylesheet" href="css/loginregister.css">
+    <title>Hora!</title>
+</head>
+<body>
+        <div class="container">
+            <div class="toggle-buttons">
+                <button class="toggle-btn active" id="login-toggle">Login</button>
+                <button class="toggle-btn" id="register-toggle">Register</button>
+            </div>
+            
+            <div class="form-box">
+                <!-- Login Form -->
+                <div class="form active" id="login-form">
+                    <h2>Login to Your Account</h2>
+                    <form action="login.php" method="POST">
+                        <div class="input-group">
+                            <label for="login-email">Email</label>
+                            <input type="email" id="login-email" name="email" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="login-password">Password</label>
+                            <input type="password" id="login-password" name="password" required>
+                        </div>
+                        <button type="submit" class="submit-btn">Login</button>
+                        <div class="error-message" id="login-error"></div>
+                    </form>
+                </div>
+                
+                <!-- Register Form -->
+                <div class="form" id="register-form">
+                    <h2>Create an Account</h2>
+                    <form action="register.php" method="POST">
+                        <div class="input-group">
+                            <label for="register-name">Full Name</label>
+                            <input type="text" id="register-name" name="name" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="register-email">Email</label>
+                            <input type="email" id="register-email" name="email" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="register-password">Password</label>
+                            <input type="password" id="register-password" name="password" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="register-confirm-password">Confirm Password</label>
+                            <input type="password" id="register-confirm-password" name="confirm_password" required>
+                        </div>
+                        <button type="submit" class="submit-btn">Register</button>
+                        <div class="error-message" id="register-error"></div>
+                        <div class="success-message" id="register-success"></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const loginToggle = document.getElementById('login-toggle');
+                const registerToggle = document.getElementById('register-toggle');
+                const loginForm = document.getElementById('login-form');
+                const registerForm = document.getElementById('register-form');
+                
+                // Toggle between login and register forms
+                loginToggle.addEventListener('click', function() {
+                    loginToggle.classList.add('active');
+                    registerToggle.classList.remove('active');
+                    loginForm.classList.add('active');
+                    registerForm.classList.remove('active');
+                });
+                
+                registerToggle.addEventListener('click', function() {
+                    registerToggle.classList.add('active');
+                    loginToggle.classList.remove('active');
+                    registerForm.classList.add('active');
+                    loginForm.classList.remove('active');
+                });
+                
+                // Password confirmation validation
+                const registerFormEl = document.querySelector('#register-form form');
+                registerFormEl.addEventListener('submit', function(e) {
+                    const password = document.getElementById('register-password').value;
+                    const confirmPassword = document.getElementById('register-confirm-password').value;
+                    const errorMessage = document.getElementById('register-error');
+                    
+                    if (password !== confirmPassword) {
+                        e.preventDefault();
+                        errorMessage.textContent = 'Passwords do not match!';
+                        return false;
+                    }
+                    return true;
+                });
+            });
+        </script>
+
+</body>
+</html>
