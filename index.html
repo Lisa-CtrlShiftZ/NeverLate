@@ -8,166 +8,169 @@
     <title>Document</title>
 </head>
 <body>
-<body>
-    <div class="container">
-        <header>
-            <h1>Morning Routine Tracker</h1>
-            <p>Stay on schedule and improve your punctuality</p>
-        </header>
-        
-        <nav>
-            <button id="routine-btn" class="nav-btn active">Routine</button>
-            <button id="arrival-btn" class="nav-btn">Arrival Time</button>
-            <button id="stats-btn" class="nav-btn">Statistics</button>
-            <button id="logout-btn" class="nav-btn" onclick="window.location.href='logout.php'">Logout</button>
+    <nav>
+            <div>
+                <img src="assets/hora-logo.jpg" alt="Hora logo" width="200px">
+            </div>
+            <div>
+
+            </div>
         </nav>
         
-        <!-- Morning Routine Section -->
-        <div id="routine-section" class="section active">
-            <h2>Morning Routine</h2>
-            <p>Add activities to your morning routine and allocate time for each:</p>
+    <div class="container">
+        <nav>
+            <button id="routine-btn" class="nav-btn active">Routine</button>
+            <button id="arrival-btn" class="nav-btn">Destination</button>
+            <button id="stats-btn" class="nav-btn">Statistics</button>
+            <button id="logout-btn" class="logout-btn" onclick="window.location.href='logout.php'">Logout</button>
+        </nav>
+        
+        <!-- Create Routine Section -->
+        <div class="main-wrapper">
+            <div id="routine-section" class="section active">
+                <h2>Create a routine</h2>
+                <p>Add activities to your morning routine and allocate time for each:</p>
             
-            <form id="add-routine-form">
-                <div>
-                    <label for="activity">Activity:</label>
-                    <input type="text" id="activity" placeholder="e.g., Shower, Breakfast, etc." required>
-                </div>
-                
-                <div>
-                    <label for="time">Time (minutes):</label>
-                    <input type="number" id="time" min="1" max="120" value="15" required>
-                </div>
-                
-                <button type="submit" class="add-routine-btn">Add Activity</button>
-            </form>
-            
-            <h3>Your Morning Routine</h3>
-            <div id="routine-list">
-                <!-- Routine items will be added here by JavaScript -->
-                <p id="no-routine-msg">No activities added yet.</p>
-            </div>
-            
-            <div class="slider-container" id="time-adjustment" style="display: none;">
-                <h3>Adjust Time Allocation</h3>
-                <!-- Time sliders will be added here by JavaScript -->
-            </div>
-            
-            <div style="margin-top: 20px;">
-                <h3>Total Morning Routine Time: <span id="total-routine-time">0</span> minutes</h3>
-            </div>
-
-            <!-- Save Routine Form -->
-            <div class="save-routine-container">
-                <h3>Save Current Routine</h3>
-                <form id="save-routine-form">
+                <form id="add-routine-form">
                     <div>
-                        <label for="routine-name">Routine Name:</label>
-                        <input type="text" id="routine-name" placeholder="e.g., Weekday Morning, Weekend, etc." required>
+                        <label for="activity">Activity:</label>
+                        <input type="text" id="activity" placeholder="e.g., Shower, Breakfast, etc." required>
                     </div>
-                    <button type="submit" class="save-routine-btn">Save Routine</button>
+            
+                    <div>
+                        <label for="time">Time (minutes):</label>
+                        <input type="number" id="time" min="1" max="120" value="15" required>
+                    </div>
+            
+                    <button type="submit" class="add-routine-btn">Add Activity</button>
                 </form>
-            </div>
-
-            <!-- Saved Routines Section -->
-            <div class="routine-selector">
-                <h3>Your Saved Routines</h3>
-                <select id="saved-routines">
-                    <option value="">-- Select a routine --</option>
-                </select>
-                <button id="load-routine-btn">Load</button>
-                <button id="delete-routine-btn">Delete</button>
-            </div>
-        </div>
-        
-        <!-- Arrival Time Section -->
-        <div id="arrival-section" class="section">
-            <h2>Set Arrival Time</h2>
             
-            <form id="arrival-form">
-                <div>
-                    <label for="destination">Destination:</label>
-                    <input type="text" id="destination" placeholder="e.g., Work, School, etc." required>
+                <h3>Your routine activities</h3>
+                <div id="routine-list">
+                    <!-- Routine items will be added here by JavaScript -->
+                    <p id="no-routine-msg">No activities added yet.</p>
                 </div>
-                
-                <div>
-                    <label for="arrival-time">Required Arrival Time:</label>
-                    <input type="time" id="arrival-time" required>
-                </div>
-                
-                <div>
-                    <label for="commute-time">Commute Time (minutes):</label>
-                    <input type="number" id="commute-time" min="1" max="180" value="30" required>
-                </div>
-                
-                <div>
-                    <label for="prep-buffer">Preparation Buffer (minutes):</label>
-                    <input type="number" id="prep-buffer" min="0" max="60" value="15" required>
-                    <p><small>Extra time for unexpected delays or last-minute preparations</small></p>
-                </div>
-                
-                <button type="submit">Save Arrival Time</button>
-            </form>
             
-            <div id="arrival-info" style="display: none; margin-top: 20px;">
-                <div class="stat-box">
-                    <h3>Today's Schedule</h3>
-                    <p>Destination: <span id="dest-display"></span></p>
-                    <p>Required arrival: <span id="arrival-display"></span></p>
-                    <p>Commute time: <span id="commute-display"></span> minutes</p>
-                    <p>Preparation buffer: <span id="buffer-display"></span> minutes</p>
-                    <p>Morning routine: <span id="routine-display"></span> minutes</p>
-                    <hr>
-                    <p><strong>You should start getting ready by: <span id="wakeup-time"></span></strong></p>
-                    <p><strong>You should leave by: <span id="leave-time"></span></strong></p>
+                <div class="slider-container" id="time-adjustment" style="display: none;">
+                    <h3>Adjust Time Allocation</h3>
+                    <!-- Time sliders will be added here by JavaScript -->
                 </div>
-            </div>
-        </div>
-        
-        <!-- Statistics Section -->
-        <div id="stats-section" class="section">
-            <h2>Punctuality Statistics</h2>
             
-            <div class="stat-box">
-                <h3>On-Time Percentage</h3>
-                <div class="stat-number" id="ontime-percentage">0%</div>
-            </div>
-            
-            <div class="stat-box">
-                <h3>Arrival History</h3>
-                <div class="stat-number">
-                    <span id="ontime-count">0</span> on time / 
-                    <span id="late-count">0</span> late
-                </div>
-            </div>
-            
-            <div class="chart-container">
-                <canvas id="punctuality-chart"></canvas>
-            </div>
-            
-            <h3>Recent Arrivals</h3>
-            <table id="arrivals-table">
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Destination</th>
-                        <th>Planned Arrival</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Table rows will be added here by JavaScript -->
-                </tbody>
-            </table>
-        </div>
-        
-        <!-- On-Time Check Modal -->
-        <div id="arrival-modal" class="modal">
-            <div class="modal-content">
-                <h2>Arrival Check</h2>
-                <p>Did you arrive at <span id="modal-destination"></span> on time today?</p>
                 <div style="margin-top: 20px;">
-                    <button id="on-time-btn" style="background-color: #2ecc71; margin-right: 10px;">Yes, On Time!</button>
-                    <button id="late-btn" style="background-color: #e74c3c;">No, I Was Late</button>
+                    <h3>Total Morning Routine Time: <span id="total-routine-time">0</span> minutes</h3>
+                </div>
+                <!-- Save Routine Form -->
+                <div class="save-routine-container">
+                    <h3>Save Current Routine</h3>
+                    <form id="save-routine-form">
+                        <div>
+                            <label for="routine-name">Routine Name:</label>
+                            <input type="text" id="routine-name" placeholder="e.g., Weekday Morning, Weekend, etc." required>
+                        </div>
+                        <button type="submit" class="save-routine-btn">Save Routine</button>
+                    </form>
+                </div>
+                <!-- Saved Routines Section -->
+                <div class="routine-selector">
+                    <h3>Your Saved Routines</h3>
+                    <select id="saved-routines">
+                        <option value="">-- Select a routine --</option>
+                    </select>
+                    <button id="load-routine-btn">Load</button>
+                    <button id="delete-routine-btn">Delete</button>
+                </div>
+            </div>
+            
+            <!-- Arrival Time Section -->
+            <div id="arrival-section" class="section">
+                <h2>Set Arrival Time</h2>
+            
+                <form id="arrival-form">
+                    <div>
+                        <label for="destination">Destination:</label>
+                        <input type="text" id="destination" placeholder="e.g., Work, School, etc." required>
+                    </div>
+            
+                    <div>
+                        <label for="arrival-time">Required Arrival Time:</label>
+                        <input type="time" id="arrival-time" required>
+                    </div>
+            
+                    <div>
+                        <label for="commute-time">Commute Time (minutes):</label>
+                        <input type="number" id="commute-time" min="1" max="180" value="30" required>
+                    </div>
+            
+                    <div>
+                        <label for="prep-buffer">Preparation Buffer (minutes):</label>
+                        <input type="number" id="prep-buffer" min="0" max="60" value="15" required>
+                        <p><small>Extra time for unexpected delays or last-minute preparations</small></p>
+                    </div>
+            
+                    <button type="submit">Save Arrival Time</button>
+                </form>
+            
+                <div id="arrival-info" style="display: none; margin-top: 20px;">
+                    <div class="stat-box">
+                        <h3>Today's Schedule</h3>
+                        <p>Destination: <span id="dest-display"></span></p>
+                        <p>Required arrival: <span id="arrival-display"></span></p>
+                        <p>Commute time: <span id="commute-display"></span> minutes</p>
+                        <p>Preparation buffer: <span id="buffer-display"></span> minutes</p>
+                        <p>Morning routine: <span id="routine-display"></span> minutes</p>
+                        <hr>
+                        <p><strong>You should start getting ready by: <span id="wakeup-time"></span></strong></p>
+                        <p><strong>You should leave by: <span id="leave-time"></span></strong></p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Statistics Section -->
+            <div id="stats-section" class="section">
+                <h2>Punctuality Statistics</h2>
+            
+                <div class="stat-box">
+                    <h3>On-Time Percentage</h3>
+                    <div class="stat-number" id="ontime-percentage">0%</div>
+                </div>
+            
+                <div class="stat-box">
+                    <h3>Arrival History</h3>
+                    <div class="stat-number">
+                        <span id="ontime-count">0</span> on time /
+                        <span id="late-count">0</span> late
+                    </div>
+                </div>
+            
+                <div class="chart-container">
+                    <canvas id="punctuality-chart"></canvas>
+                </div>
+            
+                <h3>Recent Arrivals</h3>
+                <table id="arrivals-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Destination</th>
+                            <th>Planned Arrival</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Table rows will be added here by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- On-Time Check Modal -->
+            <div id="arrival-modal" class="modal">
+                <div class="modal-content">
+                    <h2>Arrival Check</h2>
+                    <p>Did you arrive at <span id="modal-destination"></span> on time today?</p>
+                    <div style="margin-top: 20px;">
+                        <button id="on-time-btn" style="background-color: #2ecc71; margin-right: 10px;">Yes, On Time!</button>
+                        <button id="late-btn" style="background-color: #e74c3c;">No, I Was Late</button>
+                    </div>
                 </div>
             </div>
         </div>

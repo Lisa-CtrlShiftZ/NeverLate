@@ -5,6 +5,8 @@ include 'config/database.php';
 include 'models/routine.php';
 include 'models/routine_activity.php';
 
+header('Content-Type: application/json');
+
 // Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
     echo json_encode(['success' => false, 'message' => 'User not logged in']);
@@ -14,8 +16,11 @@ if (!isset($_SESSION['user_id'])) {
 // Check if form was submitted
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Get form data
-    $name = $_POST['name'] ?? '';
-    $activities = json_decode($_POST['activities'] ?? '[]', true);
+    // name = routinename, not username
+    $name = isset($_POST['name']) ? $_POST['name'] : '';
+    $activities = isset($_POST['activities']) ? json_decode($_POST['activities'], true) : [];
+
+    $user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
     
     if (empty($name) || empty($activities)) {
         echo json_encode(['success' => false, 'message' => 'Missing required data']);
@@ -27,36 +32,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $routine->user_id = $_SESSION['user_id'];
     $routine->name = $name;
     
-    if ($routine->create()) {
-        // Add activities
-        $activity = new RoutineActivity();
-        $activity->routine_id = $routine->id;
-        
-        $success = true;
-        $order = 1;
-        
-        foreach ($activities as $act) {
-            $activity->activity = $act['activity'];
-            $activity->time_minutes = $act['time'];
-            $activity->display_order = $order++;
-            
-            if (!$activity->create()) {
-                $success = false;
-                break;
-            }
-        }
-        
-        if ($success) {
-            echo json_encode(['success' => true, 'message' => 'Routine saved successfully']);
-        } else {
-            // If activities failed to create, delete the routine
-            $routine->delete();
-            echo json_encode(['success' => false, 'message' => 'Failed to save routine activities']);
-        }
-    } else {
-        echo json_encode(['success' => false, 'message' => 'Failed to create routine']);
+    if (!$user_id) {
+        echo "Error: User ID not found.";
     }
-} else {
-    echo json_encode(['success' => false, 'message' => 'Invalid request method']);
+
+    if ($name && !empty($activities) && $user_id) {
+        // Insert routine into the 'routines' table
+        echo "Name: " . var_export($name, true) . "<br>";
+        echo "Activities: " . var_export($activities, true) . "<br>";
+        echo "User ID: " . var_export($user_id, true) . "<br>";
+        $stmt = $pdo->prepare("INSERT INTO routines (routine_name, user_id) VALUES (?, ?)");
+        $stmt->execute([$name, $user_id]);
+        $routine_id = $pdo->lastInsertId();  // Get the last inserted routine_id
+
+        // Insert activities into the 'activities' table
+        $stmt = $pdo->prepare("INSERT INTO activities (routine_id, activity_name, user_id) VALUES (?, ?, ?)");
+        foreach ($activities as $activity) {
+            $stmt->execute([$routine_id, $activity['name'], $user_id]);
+        }
+
+        // Respond with success
+        echo json_encode(['success' => true]);
+    } else {
+        // Respond with an error
+        echo json_encode(['success' => false, 'message' => 'Invalid input.']);
+    }
 }
 ?>

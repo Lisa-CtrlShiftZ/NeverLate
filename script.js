@@ -62,20 +62,24 @@ document.getElementById('save-routine-form').addEventListener('submit', function
     e.preventDefault();
     
     const routineName = document.getElementById('routine-name').value;
+    const userId = sessionStorage.getItem('user_id');
     
     if (routineName && routineList.length > 0) {
         // Create form data
         const formData = new FormData();
         formData.append('name', routineName);
         formData.append('activities', JSON.stringify(routineList));
+        formData.append('user_id', userId);
         
         // Submit form
         fetch('save_routine.php', {
             method: 'POST',
             body: formData
         })
-        .then(response => response.json())
-        .then(data => {
+        .then(response => response.text())
+        .then(text => {
+            const data = JSON.parse(text); 
+            console.log('Response from server:', data)
             if (data.success) {
                 alert('Routine saved successfully!');
                 document.getElementById('routine-name').value = '';
@@ -85,7 +89,8 @@ document.getElementById('save-routine-form').addEventListener('submit', function
             }
         })
         .catch(error => {
-            console.error('Error:', error);
+            console.error('Error parsing JSON:', error);
+            console.error('Raw server response:', text);
             alert('An error occurred while saving the routine.');
         });
     } else {

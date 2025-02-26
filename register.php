@@ -39,7 +39,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (mysqli_query($conn, $insert_query)) {
         // Registration successful
         echo json_encode(['success' => 'Registration successful! You can now login.']);
-        header("Location: index.html");
         exit();
     } else {
         // Registration failed
